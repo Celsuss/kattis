@@ -1,4 +1,3 @@
-import numpy as np
 
 def get_input():
     segments = []
@@ -11,24 +10,25 @@ def get_input():
     return start_pos, segments
 
 
-def is_collision(pos_x, segment):
-    # Calculate dot product
-    a0 = [segment[0], segment[1]]
-    a1 = [segment[2], segment[3]]
-    b0 = [pos_x, 1]
-    b1 = [pos_x, segment[1]-10]
-    # print('a0: {}, a1: {}, b0: {}, b1: {}'.format(a0, a1, b0, b1))
+def intersect(pos_x, segment):
+    if (pos_x >= segment[0] and pos_x <= segment[2]) or \
+       (pos_x >= segment[2] and pos_x <= segment[0]) or \
+       (pos_x == segment[0] or pos_x == segment[2]):
+        return True
+    else:
+        return False
 
 
-    return True
+def get_displaced_position(segment):
+    if segment[1] < segment[3]:
+        return segment[0]
+    return segment[2]
 
 
 def get_segment_direction(segment):
     if segment[0] < segment[2]:
-        print('- Right')
         return 1
     else:
-        print('- Left')
         return -1
     return 0
 
@@ -36,12 +36,8 @@ def get_segment_direction(segment):
 def main():
     pos_x, segments = get_input()
     for segment in segments:
-        if not is_collision(pos_x, segment):
-            continue
-
-        direction = get_segment_direction(segment)
-        assert(direction != 0)
-        pos_x += direction
+        if intersect(pos_x, segment):
+            pos_x = get_displaced_position(segment)
 
     print(pos_x)
     return pos_x
