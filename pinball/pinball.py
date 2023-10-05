@@ -20,17 +20,11 @@ def intersect(pos_x, segment):
 
 
 def get_displaced_position(segment):
-    if segment[1] < segment[3]:
-        return segment[0]
-    return segment[2]
+    return segment[0] if segment[1] < segment[3] else segment[2]
 
 
 def get_segment_direction(segment):
-    if segment[0] < segment[2]:
-        return 1
-    else:
-        return -1
-    return 0
+    return 1 if segment[0] < segment[2] else -1
 
 
 def main():
